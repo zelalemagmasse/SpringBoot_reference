@@ -12,13 +12,13 @@ public class Friend {
     private String nameOfFFr;
     private int rankOfFriend;
     private String urlImage;
-    private String FilledBy;
+    private String filledBy;
     public String getFilledBy() {
-        return FilledBy;
+        return filledBy;
     }
 
     public void setFilledBy(String filledBy) {
-        FilledBy = filledBy;
+        this.filledBy = filledBy;
     }
 
     @ManyToMany(mappedBy = "friends")

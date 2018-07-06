@@ -67,7 +67,7 @@ public class MainController {
 
         friendRepositroy.save(friend);
         model.addAttribute("friends",friendRepositroy.findAllByFilledByOrderByRankOfFriend(friend.getFilledBy()));
-
+        //model.addAttribute("friends",friendRepositroy.findAll());
 
         return "displayfriend";
     }
