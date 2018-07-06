@@ -1,12 +1,17 @@
 package com.example.demo;
 
+import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -18,6 +23,9 @@ public class MainController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    CloudinaryConfig cloudc;
 
 //    @RequestMapping("/")
 //    public String homePage(Model model)
@@ -43,7 +51,7 @@ public class MainController {
     }
 
     @PostMapping("/")
-    public String addNewUser(@Valid @ModelAttribute("newUser") User newUser, BindingResult result, Model model)
+    public String addNewUser(@ModelAttribute("newUser") User newUser, BindingResult result, Model model)
     {
 
         if(result.hasErrors())
@@ -62,12 +70,23 @@ public class MainController {
     }
 
     @RequestMapping("/savefriend")
-    public String savePet(@ModelAttribute("aFriend") Friend friend, Model model)
-    {
+    public String savePet(@Valid @ModelAttribute("aFriend") Friend friend, BindingResult result, Model model, @RequestParam("file")MultipartFile file){
+        System.out.println(result.toString());
+        if(file.isEmpty()){
+            return "redirect:/addfriend";
+        }
+        try{
+            Map uploadResult=cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype","auto"));
+            friend.setUrlImage(uploadResult.get("url").toString());
+            friendRepositroy.save(friend);
+        }catch (IOException e){
+            e.printStackTrace();
+            return "redirect:/addfriend";
+        }
 
         friendRepositroy.save(friend);
-        model.addAttribute("friends",friendRepositroy.findAllByFilledByOrderByRankOfFriend(friend.getFilledBy()));
-        //model.addAttribute("friends",friendRepositroy.findAll());
+//        model.addAttribute("friends",friendRepositroy.findAllByFilledByOrderByRankOfFriend(friend.getFilledBy()));
+        model.addAttribute("friends",friendRepositroy.findAll());
 
         return "displayfriend";
     }

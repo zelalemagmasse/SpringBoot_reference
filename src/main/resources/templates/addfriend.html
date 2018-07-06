@@ -14,7 +14,7 @@
 
 </head>
 <body>
-<form th:action="@{/savefriend}" th:object="${aFriend}" method="post">
+<form th:action="@{/savefriend}" th:object="${aFriend}" method="post" enctype="multipart/form-data">
     <div class="container">
         <div class="jumbotron text-center">
             <h1>Add A friend</h1><br/><br/>
@@ -24,7 +24,7 @@
            Name of A friend :<input type="text" class="form-control" th:field="*{nameOfFFr} " size="10"/>
         </div>
         <div >
-            URL :<input type="text" class="form-control" th:field="*{urlImage}" size="10"/>
+            URL :<input type="file" name="file" size="10"/>
         </div>
         <div >
             Rank of A Friend:<input type="text" class="form-control" th:field="*{rankOfFriend}" size="10"/>
