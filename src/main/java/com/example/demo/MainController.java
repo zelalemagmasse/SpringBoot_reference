@@ -28,14 +28,13 @@ public class MainController {
 //        return "register";
 //    }
 
-//    @RequestMapping("/addroom")
-//    public String addroom(Model model)
-//    {
-//        model.addAttribute("aRoom", new Room());
-//        model.addAttribute("user",userRepository.findAll());
-//        model.addAttribute("roles",roleRepository.findAll());
-//        return "addroom";
-//    }
+    @RequestMapping("/addfriend")
+    public String addroom(Model model)
+    {
+        model.addAttribute("aFriend", new Friend());
+
+        return "addfriend";
+    }
       @GetMapping("/")
      public String registerUser(Model model)
     {
@@ -43,7 +42,7 @@ public class MainController {
         return "register";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/")
     public String addNewUser(@Valid @ModelAttribute("newUser") User newUser, BindingResult result, Model model)
     {
 
@@ -58,25 +57,24 @@ public class MainController {
             Role r = roleRepository.findByRole("USER");
             newUser.addRole(r);
             userRepository.save(newUser);
-            return "redirect:/";
+            return "redirect:/addfriend";
         }
     }
-/*
-    @RequestMapping("/saveroom")
-    public String savePet(@ModelAttribute("aRoom") Friend friend, Model model)
+
+    @RequestMapping("/savefriend")
+    public String savePet(@ModelAttribute("aFriend") Friend friend, Model model)
     {
 
         friendRepositroy.save(friend);
-        model.addAttribute("friends",friendRepositroy.findAll());
-        if(room.isRented()){
-            room.setIsRentednow("TAKEN");
-        }
-        else
-            room.setIsRentednow("FREE");
+        model.addAttribute("friends",friendRepositroy.findAllByFilledByOrderByRankOfFriend(friend.getFilledBy()));
 
-        return "displayrooms";
+
+        return "displayfriend";
     }
 
+
+
+/*
     @RequestMapping("/detail/{id}")
     public String showJob(@PathVariable("id") long id, Model model){
 
@@ -84,8 +82,8 @@ public class MainController {
         return "displaydetail";
 
 
-    }
-    */
+    }*/
+
 
 
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>VOTE THE DISH</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/mystlysheet.css}">
+    <!--<link rel="stylesheet" href="../static/css/mystlysheet.css">-->
+</head>
+<body c>
+<div class="jumbotron ">
+    <div class="container" >
+        <h2>your Friends are </h2>
+        <div  th:each="eachFriend:${friends}">
+            <table >
+                <thead>
+                <tr class="success" >
+                    <th>Your Friends Are</th>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="info"  >
+
+
+                    <td><div><img class="image" th:src="${eachFriend.getUrlImage()}" width="250" height="250"></div></td>
+                    <td><div th:text="${eachFriend.getNameOfFFr()}"></div></td>
+
+                </tr>
+
+
+                </tbody>
+            </table><br/>
+        </div>
+
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>
+

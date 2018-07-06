@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Message Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        .jumbotron {
+            background-color: #f4511e;
+            color: #fff;
+        }
+    </style>
+
+</head>
+<body>
+<form th:action="@{/savefriend}" th:object="${aFriend}" method="post">
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h1>Add A friend</h1><br/><br/>
+        </div>
+        <div>
+            <input type="hidden" th:field="*{id}">
+           Name of A friend :<input type="text" class="form-control" th:field="*{nameOfFFr} " size="10"/>
+        </div>
+        <div >
+            URL :<input type="text" class="form-control" th:field="*{urlImage}" size="10"/>
+        </div>
+        <div >
+            Rank of A Friend:<input type="text" class="form-control" th:field="*{rankOfFriend}" size="10"/>
+        </div>
+        <div >
+           FilledBy:<input type="text" class="form-control" th:field="*{filledBy}" size="10"/>
+        </div>
+        <br/><br/>
+        <div>
+            <button class="alig" type="submit"><span class="glyphicon glyphicon-envelope"></span>Add Friend</button>
+        </div>
+    </div>
+    </div>
+
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>

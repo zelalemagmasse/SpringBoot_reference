@@ -9,11 +9,28 @@ public class Friend {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
-    private String name;
-    private String rankOfFriend;
+    private String nameOfFFr;
+    private int rankOfFriend;
     private String urlImage;
+    private String FilledBy;
+    public String getFilledBy() {
+        return FilledBy;
+    }
+
+    public void setFilledBy(String filledBy) {
+        FilledBy = filledBy;
+    }
+
     @ManyToMany(mappedBy = "friends")
     private List<User> users;
+
+    public String getNameOfFFr() {
+        return nameOfFFr;
+    }
+
+    public void setNameOfFFr(String nameOfFFr) {
+        this.nameOfFFr = nameOfFFr;
+    }
 
     public Friend() {
         this.users = new ArrayList<>();
@@ -27,19 +44,11 @@ public class Friend {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getRankOfFriend() {
+    public int getRankOfFriend() {
         return rankOfFriend;
     }
 
-    public void setRankOfFriend(String rankOfFriend) {
+    public void setRankOfFriend(int rankOfFriend) {
         this.rankOfFriend = rankOfFriend;
     }
 
