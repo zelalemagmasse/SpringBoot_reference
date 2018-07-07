@@ -2,6 +2,9 @@ package com.example.demo;
 
 import com.cloudinary.utils.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,12 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
 public class MainController {
-    @Autowired
-    private FriendRepositroy friendRepositroy;
 
     @Autowired
     RoleRepository roleRepository;
@@ -26,15 +28,11 @@ public class MainController {
 
     @Autowired
     CloudinaryConfig cloudc;
+    
+    @Autowired
+    UserDetailsService userDetailsService;
 
-//    @RequestMapping("/")
-//    public String homePage(Model model)
-//    {
-//
-//        model.addAttribute("roles",roleRepository.findAll());
-//
-//        return "register";
-//    }
+
 
     @RequestMapping("/addfriend")
     public String addroom(Model model)
@@ -43,14 +41,21 @@ public class MainController {
 
         return "addfriend";
     }
-      @GetMapping("/")
+      @GetMapping("/displayfriend")
+     public String displayFriend(Model model)
+    {
+    	model.addAttribute("friends",getCurrentUser().getFriends());
+        return "displayfriend";
+    }
+      
+      @GetMapping("/register")
      public String registerUser(Model model)
     {
         model.addAttribute("newUser",new User());
         return "register";
     }
 
-    @PostMapping("/")
+    @PostMapping("/register")
     public String addNewUser(@ModelAttribute("newUser") User newUser, BindingResult result, Model model)
     {
 
@@ -65,43 +70,47 @@ public class MainController {
             Role r = roleRepository.findByRole("USER");
             newUser.addRole(r);
             userRepository.save(newUser);
-            return "redirect:/addfriend";
+            return "index";
         }
     }
 
     @RequestMapping("/savefriend")
     public String savePet(@Valid @ModelAttribute("aFriend") Friend friend, BindingResult result, Model model, @RequestParam("file")MultipartFile file){
         System.out.println(result.toString());
+
+
+        
+        
         if(file.isEmpty()){
             return "redirect:/addfriend";
         }
+      User user=getCurrentUser();
         try{
             Map uploadResult=cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype","auto"));
-            friend.setUrlImage(uploadResult.get("url").toString());
-            friendRepositroy.save(friend);
+            friend.setUrlImage(uploadResult.get("url").toString());    
+            user.getFriends().add(friend);
+            userRepository.save(user);
+            
         }catch (IOException e){
             e.printStackTrace();
             return "redirect:/addfriend";
         }
 
-        friendRepositroy.save(friend);
 //        model.addAttribute("friends",friendRepositroy.findAllByFilledByOrderByRankOfFriend(friend.getFilledBy()));
-        model.addAttribute("friends",friendRepositroy.findAll());
+        model.addAttribute("friends",user.getFriends());
 
         return "displayfriend";
     }
 
 
 
-/*
-    @RequestMapping("/detail/{id}")
-    public String showJob(@PathVariable("id") long id, Model model){
-
-        model.addAttribute("rooms", roomRipository.findById(id).get());
-        return "displaydetail";
-
-
-    }*/
+private User getCurrentUser()
+{
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String userName=auth.getName();
+    User user = userRepository.findUserClassByUsername(userName);
+    return user;
+}
 
 
 

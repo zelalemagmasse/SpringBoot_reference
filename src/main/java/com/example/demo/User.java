@@ -15,7 +15,7 @@ public class User {
     private String email;
     private String password;
     private String username;
-    @ManyToMany(fetch= FetchType.EAGER)
+    @ManyToMany(fetch= FetchType.EAGER, cascade=CascadeType.ALL)
     private Set<Friend> friends;
 
     public Set<Role> getRoleOfUsers() {

@@ -2,22 +2,33 @@
 <html lang="en" xmlns:th="www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Friends Site</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
 
 </head>
 <body>
 <nav class="navbar navbar-expand-sm bg-light">
     <ul class="navbar-nav">
+    <div sec:authorize="isAuthenticated()">
         <li class="nav-item">
-            <a class="nav-link" th:href="@{/dispalyfriend}">Display all Your Friends</a>
+            <a class="nav-link" th:href="@{/displayfriend}">Display all Your Friends</a>
         </li><br/><br/>
         <li class="nav-item">
             <a class="nav-link" th:href="@{/addfriend}">Add A new Friend</a>
         </li>
+        </div>
+        <div sec:authorize="isAnonymous()">
+        <li class="nav-item">
+        <a class="nav-link" th:href="@{/login}">login</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" th:href="@{/register}">Register</a>
+        </li>
+        </div>
 
     </ul>
 </nav>
+
 <div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1>Welcome to Friends's Site</h1>
