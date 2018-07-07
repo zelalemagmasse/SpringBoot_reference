@@ -15,7 +15,9 @@ public class User {
     private String email;
     private String password;
     private String username;
+
     @ManyToMany(fetch= FetchType.EAGER, cascade=CascadeType.ALL)
+    @OrderBy("rankOfFriend")
     private Set<Friend> friends;
 
     public Set<Role> getRoleOfUsers() {
