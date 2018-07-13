@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.zol.fsite.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,13 +11,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistration;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.zol.fsite.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private SSUDS userDetailService;
+
 
     @Autowired
     private UserRepository userRepository;
@@ -31,21 +35,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new SSUDS(userRepository);
     }
 
-
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
-
-                .antMatchers("/").permitAll()
-                .antMatchers("/index").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll();
-
+        .antMatchers("/").permitAll()
+        .antMatchers("/index").permitAll()
+        .antMatchers("/register").permitAll()
+        .antMatchers("/h2-console/**").permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .formLogin()
+        .loginPage("/login")
+        .permitAll(true)
+        .and()
+        .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").permitAll();
+     
+        
         http.headers().frameOptions().disable();
         http.csrf().disable();
 
@@ -54,5 +61,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         auth.userDetailsService(userDetailsServiceBean());
+    }
+    
+    
+    @Bean
+    WebMvcConfigurer myWebMvcConfigurer() {
+        return new WebMvcConfigurer() {
+
+            @Override
+            public void addViewControllers(ViewControllerRegistry registry) {
+                ViewControllerRegistration r = registry.addViewController("/login");
+                r.setViewName("login");
+            }
+        };
     }
 }

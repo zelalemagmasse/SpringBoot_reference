@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.zol.fsite.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.Transformation;

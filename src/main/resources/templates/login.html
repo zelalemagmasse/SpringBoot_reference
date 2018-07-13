@@ -24,10 +24,10 @@
   <div class="middle-box text-center loginscreen animated fadeInDown">
     <div>
       
-      <h4>New User Registration</h4>
+      <h4>Please login</h4>
 
-      <form autocomplete="off" action="#" th:action="@{/register}"
-        th:object="${newUser}" method="post" class="m-t" role="form"
+      <form autocomplete="off" action="#" th:action="@{/login}"
+         method="post" class="m-t" role="form"
         data-toggle="validator">
 
         <div th:if="${alreadyRegisteredMessage}"
@@ -35,56 +35,37 @@
           th:text="${alreadyRegisteredMessage}"></div>
 
 
-        <div th:if="${#fields.hasErrors('userName')}"
-          th:errors="*{userName}"
-          class="validation-message alert alert-danger" role="alert"></div>
-
-        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"
-          class="validation-message alert alert-danger" role="alert"></div>
-          
-        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-          class="validation-message alert alert-danger" role="alert"></div>
 
         <div class="form-group input-group has-feedback">
-          <label th:if="${#fields.hasErrors('userName')}"
-            th:errors="*{userName}" class="validation-message"></label>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-user"></span>
           </span>
           
-          <input type="text" th:field="*{userName}"
+          <input type="text"  id="username" name="username"
             placeholder="user Name" class="form-control" required />
           <span class="glyphicon form-control-feedback"
             aria-hidden="true"></span>
-        </div>
-
-
-        <div class="form-group input-group has-feedback">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-envelope"></span>
-          </span>
-          <input type="email" th:field="*{email}"
-            placeholder="Email Address" class="form-control"
-            data-error="This email address is invalid" required />
-          <span class="glyphicon form-control-feedback"
-            aria-hidden="true"></span>
-
         </div>
         
          <div class="form-group input-group has-feedback">
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-lock"></span>
           </span>
-          <input name="password" type="password" th:field="*{password}"  
+          <input name="password" type="password" id="password"  
             placeholder="Password" class="form-control" required />
           <span class="glyphicon"
             aria-hidden="true"></span>
         </div>
        
-        <button type="submit" class="btn btn-primary block full-width m-b">Register</button>
+        <button type="submit" class="btn btn-primary block full-width m-b">login</button>
 
       </form>
    </div>
+   <br />
+   <div>
+   <h4>Not Registered?</h4>
+    <a th:href="@{/register}"><button class="btn btn-primary">Register</button></a>
+    </div>
   </div>
 
  <!-- jQuery-->

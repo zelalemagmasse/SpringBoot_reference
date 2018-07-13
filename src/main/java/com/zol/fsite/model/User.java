@@ -1,8 +1,11 @@
-package com.example.demo;
+package com.zol.fsite.model;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,10 +14,18 @@ public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
-
+	@Column(name = "email", nullable = false, unique = true)
+	@Email(message = "Please provide a valid e-mail")
+	@NotEmpty(message = "Please provide an e-mail")
     private String email;
+	
+	@Column(name = "password", nullable = false)
+	@NotEmpty(message = "Please provide a password")
     private String password;
-    private String username;
+    
+	@Column(name = "userName", nullable = false, unique = true)
+	@NotEmpty(message = "Please provide a user Name")
+    private String userName;
 
     @ManyToMany(fetch= FetchType.EAGER, cascade=CascadeType.ALL)
     @OrderBy("rankOfFriend")
@@ -55,12 +66,12 @@ public class User {
         this.password = new BCryptPasswordEncoder().encode(password) ;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Set<Friend> getFriends() {

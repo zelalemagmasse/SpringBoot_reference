@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.zol.fsite.service;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -6,6 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.zol.fsite.model.Role;
+import com.zol.fsite.model.User;
+import com.zol.fsite.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
@@ -25,13 +29,12 @@ public class SSUDS implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try{
-            User user = userRepository.findUserClassByUsername(username);
+            User user = userRepository.findUserClassByUserName(username);
             if(user==null)
             {
                 throw new UsernameNotFoundException(username+" not found");
             }
-            System.out.println(user.getUsername()+" is granted access");
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),getAuthorities(user));
+            return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(),getAuthorities(user));
 
 
         }catch (Exception e)

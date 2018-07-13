@@ -1,6 +1,7 @@
-package com.example.demo;
+package com.zol.fsite.model;
 
 import javax.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
